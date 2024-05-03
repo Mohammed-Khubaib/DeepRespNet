@@ -13,7 +13,7 @@ from tensorflow.keras.models import load_model
 st.set_page_config(page_title="DeepRespNet", page_icon='🫁', layout="wide",initial_sidebar_state='auto')
 from linechart import LineChart
 from pieChart import pieChart
-yaml_file_path = "./model4accuracy.yaml"
+yaml_file_path = "./model5accuracy.yaml"
 def load_lottie_file(filepath:str):
     with open(filepath,"r") as f:
         return json.load(f)
@@ -192,7 +192,7 @@ elif tabs =='Auscultation':
         wav_audio_data = st_audiorec()
 
 else :
-    loaded_model = load_model("./diagnosis_GRU_CNN_4.h5")
+    loaded_model = load_model("./diagnosis_GRU_CNN_5.keras")
     if load_model is not None:
         st.success(":green[Model Loaded]")
     audio_file = st.file_uploader('Upload the lung sound',type='.wav',accept_multiple_files=False)

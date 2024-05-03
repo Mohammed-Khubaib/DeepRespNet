@@ -127,7 +127,7 @@ def LineChart(Data):
                 }
 
                 )
-yaml_file_path = "./model4accuracy.yaml"
-# Load the saved history data from the file
-with open(yaml_file_path, 'r') as file:
-    Data = yaml.load(file, Loader=yaml.FullLoader)
+# yaml_file_path = "./model4accuracy.yaml"
+# # Load the saved history data from the file
+# with open(yaml_file_path, 'r') as file:
+#     Data = yaml.load(file, Loader=yaml.FullLoader)
