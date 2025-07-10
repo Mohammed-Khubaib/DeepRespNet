@@ -1,0 +1,10 @@
+# Ignore macOS system files
+.DS_Store
+
+# Ignore Python bytecode
+*__pycache__/
+
+# Ignoring UV based folders and files
+.venv/
+uv.lock
+/data

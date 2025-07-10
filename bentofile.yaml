@@ -1,0 +1,18 @@
+service: "service:svc"
+
+name: deeprespnet
+
+description: "DeepRespNet Model Deployed using BentoML"
+
+labels:
+  owner: Mohammed-Khubaib
+  stage: ready
+
+include:
+  - service.py
+  - src/prediction/
+  - src/features/
+  - requirements.txt
+
+python:
+  requirements_txt: requirements.txt

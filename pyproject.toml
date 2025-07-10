@@ -1,0 +1,40 @@
+[project]
+name = "deep-resp-net"
+version = "0.0.1"
+description = "An end-to-end MLOps pipeline for training and deploying the DeepRespNet Deep Learning model."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+   "ipykernel>=6.29.5",
+   "tensorflow-macos>=2.14.0",
+   "keras>=2.14.0",
+   "librosa>=0.11.0",
+   "pandas>=2.3.0",
+   "seaborn>=0.13.2",
+   "numpy<2",
+   "resampy>=0.4.3",
+   "pydot>=4.0.1",
+   "tqdm>=4.67.1",
+   "audiomentations>=0.7.0",
+   "bentoml==1.0.25",
+   "pydantic>=2.11.7",
+]
+
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.bentoml.build]
+service = "service.py:svc"
+description = "DeepRespNet Model Deployed using BentoML"
+include = ['service.py','src/prediction/prediction.py','requirements.txt']
+exclude = ["notbooks/", "archive/", "bento", "data/", "models/", "uv.lock", "secrets.key"]
+
+[tool.bentoml.build.labels]
+owner = "Mohammed Khubaib"
+stage = "ready"
+
+[tool.bentoml.build.docker]
+distro = "debian"
+python_version = "3.10"
+system_packages = ["libblas-dev", "liblapack-dev", "gfortran"]
