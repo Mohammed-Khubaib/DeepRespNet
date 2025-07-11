@@ -33,7 +33,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath('__file__'))))
 # Import augmentations from audio_augmentations.py
-from src.features.audio_augmentations import  stretch
+from ..features.audio_augmentations import  stretch
 
 def audio_preprocessing(
     audio_input: str,

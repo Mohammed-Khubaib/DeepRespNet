@@ -82,6 +82,11 @@ def create_model() -> Model:
     deeprespnet_model = Model(inputs=Input_Sample, outputs = model_10)
     return deeprespnet_model
 
+import tensorflow as tf
+from tensorflow.keras.models import Model
+import numpy as np
+import os
+
 def train_model(model: Model, x_train: np.ndarray, y_train: np.ndarray, 
                 x_val: np.ndarray, y_val: np.ndarray) -> tf.keras.callbacks.History:
     """
@@ -122,7 +127,7 @@ def train_model(model: Model, x_train: np.ndarray, y_train: np.ndarray,
     - Optimizer: Adam (learning rate = 0.0001)
     - Loss: Categorical Crossentropy
     - Metrics: Accuracy
-    - Epochs: 10
+    - Epochs: 5
     - Batch Size: 32
     - Callbacks:
         - EarlyStopping (patience=300 epochs, monitoring accuracy)
@@ -135,17 +140,23 @@ def train_model(model: Model, x_train: np.ndarray, y_train: np.ndarray,
     - For reproducibility, ensure random seeds are set before calling this function.
     """
     
-    # Create and compile model
+    # Create models directory if it doesn't exist
+    os.makedirs("./models", exist_ok=True)
+    
+    # Use the input model directly
     gru_model = model
     
+    # Create optimizer
     optimizer = tf.keras.optimizers.Adam(learning_rate=0.0001)
+    
+    # Compile the model
     gru_model.compile(
         optimizer=optimizer,
         loss='categorical_crossentropy',
         metrics=['accuracy']
     )
     
-    # Training callbacks
+    # Training callbacks - REMOVED save_format parameter
     cb = [
         tf.keras.callbacks.EarlyStopping(
             patience=300,
@@ -154,21 +165,23 @@ def train_model(model: Model, x_train: np.ndarray, y_train: np.ndarray,
             restore_best_weights=True
         ),
         tf.keras.callbacks.ModelCheckpoint(
-            filepath="./models/diagnosis_GRU_CNN_6.h5",  
+            filepath="./models/saved_model.keras",
             save_best_only=True,
-            save_format="h5"
+            monitor='val_accuracy',  # Added monitor parameter
+            mode='max',              # Added mode parameter
+            verbose=1                # Added verbose for better feedback
         )
     ]
 
-    # Train the model (uncomment when training)
+    # Train the model
     history = gru_model.fit(
         x_train, y_train,
         validation_data=(x_val, y_val),
         epochs=5,
         batch_size=32,
-        callbacks=cb
+        callbacks=cb,
+        verbose=1  # Added verbose for training progress
     )
     
-    
-    print("Model saved successfully with BentoML!")
-    return  history
+    print("Model training completed successfully!")
+    return history
