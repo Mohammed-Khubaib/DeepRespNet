@@ -1,0 +1,32 @@
+name: lung_sound_classifier
+version: f6wkfuc6gokal33a
+module: bentoml.keras
+labels:
+  team: ml
+  stage: development
+  task: audio_classification
+options:
+  partial_kwargs: {}
+  include_optimizer: false
+metadata:
+  epochs: '5'
+  model_type: CNN-GRU
+  input_shape: (1, 52)
+  classes:
+  - Acute
+  - Chronic
+  - Healthy
+  train_accuracy: '0.6786'
+  val_accuracy: '0.7050'
+  framework: tensorflow-keras
+context:
+  framework_name: keras
+  framework_versions:
+    tensorflow: 2.19.0
+  bentoml_version: 1.4.17
+  python_version: 3.12.11
+signatures:
+  predict:
+    batchable: false
+api_version: v1
+creation_time: '2025-07-11T08:43:58.467826+00:00'

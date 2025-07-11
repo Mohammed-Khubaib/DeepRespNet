@@ -1,0 +1,35 @@
+{
+  "name": "svc",
+  "type": "service",
+  "routes": [
+    {
+      "name": "classify",
+      "route": "/classify",
+      "batchable": false,
+      "input": {
+        "properties": {
+          "file": {
+            "format": "binary",
+            "title": "File",
+            "type": "file"
+          }
+        },
+        "required": [
+          "file"
+        ],
+        "title": "Input",
+        "type": "object"
+      },
+      "output": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "is_task": false
+    }
+  ],
+  "paths": {
+    "/classify": {
+      "mounted": false
+    }
+  }
+}
