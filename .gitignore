@@ -8,3 +8,5 @@
 .venv/
 uv.lock
 /data
+*.db
+.env

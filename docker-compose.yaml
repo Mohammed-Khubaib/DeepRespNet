@@ -1,0 +1,55 @@
+# version: '3.8'
+
+services:
+  api:
+    image: ghcr.io/mohammed-khubaib/deeprespnet-api-key-server:latest       # Use the pre-built image
+    ports:
+      - "8000:8000"
+    networks:
+      - deeprespnet-network
+    environment:
+      - DATABASE_URL=sqlite:///./apikeys.db
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:8000/healthz"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 40s
+
+  bento_ml:
+    image: ghcr.io/mohammed-khubaib/deeprespnet-bento:latest     # Use the pre-built image
+    ports:
+      - "3000:3000"
+    networks:
+      - deeprespnet-network
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:3000/healthz"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 40s
+
+  
+  client:
+    image: ghcr.io/mohammed-khubaib/deeprespnet-ui:latest     # Use the pre-built image
+    ports:
+      - "8501:8501"
+    depends_on:
+      # bento_ml:
+      #   condition: service_healthy
+      # api:
+      #   condition: service_healthy
+      - api
+      - bento_ml
+    environment:
+      # If your client needs API URL
+      - FASTAPI_HOST=api
+      - FASTAPI_PORT=8000
+      - BENTOML_HOST=bento_ml
+      - BENTOML_PORT=3000
+    networks:
+      - deeprespnet-network
+
+networks:
+  deeprespnet-network:
+    driver: bridge

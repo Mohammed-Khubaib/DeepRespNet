@@ -4,37 +4,86 @@ version = "0.0.1"
 description = "An end-to-end MLOps pipeline for training and deploying the DeepRespNet Deep Learning model."
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = [
-    "audiomentations>=0.42.0",
-    "bentoml>=1.4.17",
+dependencies = []
+
+# uv sync --no-group dev --group core --group frontend
+# uv sync --no-group dev --group core --group backend
+
+[dependency-groups]
+# Model Development
+model_dev = [
     "ipykernel>=6.29.5",
-    "keras>=3.10.0",
-    "librosa>=0.11.0",
-    "numpy>=2.1.3",
-    "pandas>=2.3.1",
-    "pydantic>=2.11.7",
-    "pydot>=4.0.1",
     "resampy>=0.4.3",
-    "seaborn>=0.13.2",
-    "tensorflow>=2.19.0",
     "tqdm>=4.67.1",
+    "tensorflow>=2.15.1",
+    "keras>=3.10.0",
+    "audiomentations>=0.42.0",
+    "mlflow>=3.1.1",
+    "pandas>=2.3.1",
+    "librosa>=0.11.0",
+    "numpy>=1.26.0",
+    "pydot>=4.0.1",
 ]
 
+bentoml = [
+    "bentoml>=1.4.17",
+]
+# FastAPI Backend
+backend = [
+    "fastapi>=0.116.1",
+    "uvicorn>=0.35.0",
+    "sqlalchemy>=2.0.41",
+    "pydantic-settings>=2.10.1",
+    "pydantic>=2.11.7",
+    "aiosqlite>=0.21.0",
+    "numpy>=1.26.0",
+]
+# Streamlit Frontend
+frontend = [
+    "streamlit-on-hover-tabs>=1.0.1",
+    "streamlit>=1.47.0",
+    "streamlit-audiorec>=0.1.3",
+    "streamlit-elements>=0.1.0",
+    "streamlit-lottie>=0.0.5",
+    "seaborn>=0.13.2",
+    "pyyaml>=6.0.2",
 
-[tool.setuptools.packages.find]
-where = ["src"]
+    "librosa>=0.11.0",
+    "numba>=0.59.0",        
+    "llvmlite>=0.42.0",     
+    "numpy>=1.26.0", 
+]
 
-[tool.bentoml.build]
-service = "service.py:svc"
-description = "DeepRespNet Model Deployed using BentoML"
-include = ['service.py','src/prediction/prediction.py','requirements.txt']
-exclude = ["notbooks/", "archive/", "bento", "data/", "models/", "uv.lock", "secrets.key"]
+# docs
+docs = [
+    "mkdocs-git-committers-plugin-2>=2.5.0",
+    "mkdocs-git-revision-date-localized-plugin>=1.4.7",
+    "mkdocs-material>=9.6.15",
+    "mkdocs-minify-plugin>=0.8.0",
+]
 
-[tool.bentoml.build.labels]
-owner = "Mohammed Khubaib"
-stage = "ready"
+# # Optional: combined groups for convenience
+# dev = [
+#     {include-group = "model_dev"},
+#     {include-group = "backend"},
+#     {include-group = "frontend"},
+#     {include-group = "docs"},
+# ]
 
-[tool.bentoml.build.docker]
-distro = "debian"
-python_version = "3.10"
-system_packages = ["libblas-dev", "liblapack-dev", "gfortran"]
+# [tool.setuptools.packages.find]
+# where = ["src"]
+
+# [tool.bentoml.build]
+# service = "service.py:svc"
+# description = "DeepRespNet Model Deployed using BentoML"
+# include = ['service.py','src/prediction/prediction.py','requirements.txt']
+# exclude = ["notbooks/", "archive/", "bento", "data/", "models/", "uv.lock", "secrets.key"]
+
+# [tool.bentoml.build.labels]
+# owner = "Mohammed Khubaib"
+# stage = "ready"
+
+# [tool.bentoml.build.docker]
+# distro = "debian"
+# python_version = "3.10"
+# system_packages = ["libblas-dev", "liblapack-dev", "gfortran"]

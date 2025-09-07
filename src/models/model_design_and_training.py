@@ -1,3 +1,4 @@
+import os
 import tensorflow as tf
 from tensorflow.keras.models import  Model # type: ignore
 from tensorflow.keras.layers import Conv1D, MaxPooling1D # type: ignore
@@ -82,13 +83,9 @@ def create_model() -> Model:
     deeprespnet_model = Model(inputs=Input_Sample, outputs = model_10)
     return deeprespnet_model
 
-import tensorflow as tf
-from tensorflow.keras.models import Model
-import numpy as np
-import os
 
 def train_model(model: Model, x_train: np.ndarray, y_train: np.ndarray, 
-                x_val: np.ndarray, y_val: np.ndarray) -> tf.keras.callbacks.History:
+                x_val: np.ndarray, y_val: np.ndarray,epoch: int = 5, batch_size: int = 32 ) -> tf.keras.callbacks.History:
     """
     Trains the GRU-CNN model on provided training data with validation and saves the best model.
 
@@ -127,8 +124,8 @@ def train_model(model: Model, x_train: np.ndarray, y_train: np.ndarray,
     - Optimizer: Adam (learning rate = 0.0001)
     - Loss: Categorical Crossentropy
     - Metrics: Accuracy
-    - Epochs: 5
-    - Batch Size: 32
+    - Epochs: Number of Epochs, default to 5
+    - Batch Size: default 32
     - Callbacks:
         - EarlyStopping (patience=300 epochs, monitoring accuracy)
         - ModelCheckpoint (saves best model to './models/diagnosis_GRU_CNN_6.h5')
@@ -177,8 +174,8 @@ def train_model(model: Model, x_train: np.ndarray, y_train: np.ndarray,
     history = gru_model.fit(
         x_train, y_train,
         validation_data=(x_val, y_val),
-        epochs=5,
-        batch_size=32,
+        epochs=epoch,
+        batch_size=batch_size,
         callbacks=cb,
         verbose=1  # Added verbose for training progress
     )

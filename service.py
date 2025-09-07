@@ -1,5 +1,4 @@
 import bentoml
-from bentoml.io import File, JSON
 from typing import Dict
 from src.prediction.prediction import audio_preprocessing, deeprespnet_diagnosis_prediction
 import warnings
@@ -21,11 +20,36 @@ CLASSES = ["Acute", "Chronic", "Healthy"]
 class svc:
     def __init__(self):
         # Load model
-        self.deeprespnet = bentoml.keras.load_model("lung_sound_classifier:latest")
+        self.deeprespnet = bentoml.mlflow.load_model("peepseek:latest")
 
 
     @bentoml.api
     def classify(self, file: Path) -> Dict:
+        """
+            Classify an audio file to predict respiratory condition.
+
+            This endpoint accepts the path to an audio file, performs preprocessing,
+            and uses a trained DeepRespNet model to predict the respiratory condition.
+            
+            ### Request Parameters:
+            - **file** (`Path`): Path to the input audio file (e.g., `.wav` format).
+
+            ### Response:
+            Returns a JSON object with the predicted class and its associated confidence score.
+
+            #### Example response:
+            ```json
+            {
+            "predicted_class": "Crackles",
+            "confidence": 0.92
+            }
+            ```
+
+            ### Returns:
+            - **dict**: A dictionary with:
+                - `predicted_class` (`str`): The label predicted by the model.
+                - `confidence` (`float`): The confidence score of the prediction (between 0 and 1).
+        """
         features = audio_preprocessing(file)
         predicted_class, confidence = deeprespnet_diagnosis_prediction(features=features,model=self.deeprespnet,use_bento_model=False)
 
